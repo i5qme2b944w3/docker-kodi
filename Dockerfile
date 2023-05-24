@@ -31,7 +31,7 @@ RUN apt-get update                                                        && \
 	apt-get -y --purge autoremove                                         && \
 	rm -rf /var/lib/apt/lists/*
 
-# install python package pycryptodomex, for netflix addon
+# install python package pycryptodomex, needed for netflix addon
 RUN apt-get update                                            && \
 	apt-get install -y --no-install-recommends python3-pip    && \
 	pip3 install pycryptodomex                                && \
