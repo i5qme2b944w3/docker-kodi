@@ -18,9 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-FROM ubuntu:focal
-
-ARG KODI_VERSION=19.0
+FROM ubuntu:latest
 
 # https://github.com/ehough/docker-nfs-server/pull/3#issuecomment-387880692
 ARG DEBIAN_FRONTEND=noninteractive
@@ -50,64 +48,19 @@ ARG KODI_EXTRA_PACKAGES=
 #  - kodi-screensaver-*           additional screensavers (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
 RUN packages="                                               \
                                                              \
-    ca-certificates                                          \
-    kodi=2:${KODI_VERSION}+*                                 \
-    kodi-eventclients-kodi-send                              \
-    kodi-game-libretro                                       \
-    kodi-game-libretro-beetle-pce-fast                       \
-    kodi-game-libretro-beetle-vb                             \
-    kodi-game-libretro-beetle-wswan                          \
-    kodi-game-libretro-bsnes-mercury-accuracy                \
-    kodi-game-libretro-bsnes-mercury-balanced                \
-    kodi-game-libretro-bsnes-mercury-performance             \
-    kodi-game-libretro-desmume                               \
-    kodi-game-libretro-fbalpha2012                           \
-    kodi-game-libretro-fuse                                  \
-    kodi-game-libretro-gambatte                              \
-    kodi-game-libretro-prboom                                \
-    kodi-game-libretro-stella                                \
-    kodi-game-libretro-tgbdual                               \
-    kodi-game-libretro-vba-next                              \
-    kodi-game-libretro-virtualjaguar                         \
-    kodi-inputstream-adaptive                                \
-    kodi-inputstream-rtmp                                    \
-    kodi-peripheral-joystick                                 \
-    kodi-peripheral-xarcade                                  \
-    kodi-pvr-argustv                                         \
-    kodi-pvr-dvblink                                         \
-    kodi-pvr-dvbviewer                                       \
-    kodi-pvr-filmon                                          \
-    kodi-pvr-hdhomerun                                       \
-    kodi-pvr-hts                                             \
-    kodi-pvr-iptvsimple                                      \
-    kodi-pvr-mediaportal-tvserver                            \
-    kodi-pvr-mythtv                                          \
-    kodi-pvr-nextpvr                                         \
-    kodi-pvr-njoy                                            \
-    kodi-pvr-octonet                                         \
-    kodi-pvr-pctv                                            \
-    kodi-pvr-sledovanitv-cz                                  \
-    kodi-pvr-stalker                                         \
-    kodi-pvr-teleboy                                         \
-    kodi-pvr-vbox                                            \
-    kodi-pvr-vdr-vnsi                                        \
-    kodi-pvr-vuplus                                          \
-    kodi-pvr-wmc                                             \
-    kodi-pvr-zattoo                                          \
-    kodi-screensaver-asteroids                               \
-    kodi-screensaver-asterwave                               \
-    kodi-screensaver-biogenesis                              \
-    kodi-screensaver-cpblobs                                 \
-    kodi-screensaver-greynetic                               \
-    kodi-screensaver-matrixtrails                            \
-    kodi-screensaver-pingpong                                \
-    kodi-screensaver-pyro                                    \
-    kodi-screensaver-stars                                   \
-    locales                                                  \
-    pulseaudio                                               \
-    tzdata                                                   \
-    va-driver-all                                            \
-    ${KODI_EXTRA_PACKAGES}"                               && \
+	ca-certificates                                          \
+	kodi													 \
+	kodi-eventclients-kodi-send                              \
+	kodi-game-libretro                                       \
+	kodi-inputstream-adaptive                                \
+	kodi-inputstream-rtmp                                    \
+	kodi-peripheral-joystick                                 \
+	kodi-peripheral-xarcade                                  \
+	locales                                                  \
+	pulseaudio                                               \
+	tzdata                                                   \
+	va-driver-all                                            \
+	${KODI_EXTRA_PACKAGES}"                               && \
                                                              \
     apt-get update                                        && \
     apt-get install -y --no-install-recommends $packages  && \
