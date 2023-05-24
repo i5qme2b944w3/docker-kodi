@@ -31,6 +31,13 @@ RUN apt-get update                                                        && \
 	apt-get -y --purge autoremove                                         && \
 	rm -rf /var/lib/apt/lists/*
 
+# install python package pycryptodomex, for netflix addon
+RUN apt-get update                                            && \
+	apt-get install -y --no-install-recommends python3-pip    && \
+	pip3 install pycryptodomex                                && \
+	apt-get -y --purge autoremove                             && \
+	rm -rf /var/lib/apt/lists/*
+
 ARG KODI_EXTRA_PACKAGES=
 
 # besides kodi, we will install a few extra packages:
@@ -46,8 +53,8 @@ ARG KODI_EXTRA_PACKAGES=
 #  - kodi-game-libretro-*         Libretro cores (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
 #  - kodi-pvr-*                   PVR add-ons (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
 #  - kodi-screensaver-*           additional screensavers (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
-RUN packages="                                                   \
-                                                                 \
+RUN packages="                                               \
+                                                             \
 	ca-certificates                                          \
 	kodi                                                     \
 	kodi-eventclients-kodi-send                              \
@@ -61,7 +68,7 @@ RUN packages="                                                   \
 	tzdata                                                   \
 	va-driver-all                                            \
 	${KODI_EXTRA_PACKAGES}"                               && \
-                                                                 \
+                                                             \
 	apt-get update                                        && \
 	apt-get install -y --no-install-recommends $packages  && \
 	apt-get -y --purge autoremove                         && \
