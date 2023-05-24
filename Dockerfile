@@ -23,20 +23,16 @@ FROM ubuntu:latest
 # https://github.com/ehough/docker-nfs-server/pull/3#issuecomment-387880692
 ARG DEBIAN_FRONTEND=noninteractive
 
-# install the team-xbmc ppa
+# install the team-xbmc ppa, as well as python package wanted by netflix addon
 RUN apt-get update                                                        && \
-	apt-get install -y --no-install-recommends software-properties-common && \
-	add-apt-repository ppa:team-xbmc/ppa                                  && \
-	apt-get -y purge openssl software-properties-common                   && \
-	apt-get -y --purge autoremove                                         && \
-	rm -rf /var/lib/apt/lists/*
-
-# install python package pycryptodomex, needed for netflix addon
-RUN apt-get update                                            && \
-	apt-get install -y --no-install-recommends python3-pip    && \
-	pip3 install pycryptodomex                                && \
-	apt-get -y --purge autoremove                             && \
-	rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends                               \
+    gnupg ca-certificates python3 python3-pip software-properties-common  && \
+    add-apt-repository ppa:team-xbmc/ppa                                  && \
+    pip3 install pycryptodomex                                            && \
+    apt-get -y --no-install-recommends purge                                 \
+    software-properties-common ca-certificates+ python3+                  && \
+    apt-get -y --purge autoremove                                         && \
+    rm -rf /var/lib/apt/lists/*
 
 ARG KODI_EXTRA_PACKAGES=
 
@@ -50,29 +46,29 @@ ARG KODI_EXTRA_PACKAGES=
 #  - pulseaudio                   in case the user prefers PulseAudio instead of ALSA
 #  - tzdata                       necessary for timezone selection
 #  - va-driver-all                the full suite of drivers for the Video Acceleration API (VA API)
-#  - kodi-game-libretro-*         Libretro cores (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
-#  - kodi-pvr-*                   PVR add-ons (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
-#  - kodi-screensaver-*           additional screensavers (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
+#  - kodi-game-libretro-*         Libretro cores (REMOVED AFTER DEPRECATION)
+#  - kodi-pvr-*                   PVR add-ons (REMOVED AFTER DEPRECATION)
+#  - kodi-screensaver-*           additional screensavers (REMOVED AFTER DEPRECATION)
 RUN packages="                                               \
                                                              \
-	ca-certificates                                          \
-	kodi                                                     \
-	kodi-eventclients-kodi-send                              \
-	kodi-game-libretro                                       \
-	kodi-inputstream-adaptive                                \
-	kodi-inputstream-rtmp                                    \
-	kodi-peripheral-joystick                                 \
-	kodi-peripheral-xarcade                                  \
-	locales                                                  \
-	pulseaudio                                               \
-	tzdata                                                   \
-	va-driver-all                                            \
-	${KODI_EXTRA_PACKAGES}"                               && \
+    ca-certificates                                          \
+    kodi                                                     \
+    kodi-eventclients-kodi-send                              \
+    kodi-game-libretro                                       \
+    kodi-inputstream-adaptive                                \
+    kodi-inputstream-rtmp                                    \
+    kodi-peripheral-joystick                                 \
+    kodi-peripheral-xarcade                                  \
+    locales                                                  \
+    pulseaudio                                               \
+    tzdata                                                   \
+    va-driver-all                                            \
+    ${KODI_EXTRA_PACKAGES}"                               && \
                                                              \
-	apt-get update                                        && \
-	apt-get install -y --no-install-recommends $packages  && \
-	apt-get -y --purge autoremove                         && \
-	rm -rf /var/lib/apt/lists/*
+    apt-get update                                        && \
+    apt-get install -y --no-install-recommends $packages  && \
+    apt-get -y --purge autoremove                         && \
+        rm -rf /var/lib/apt/lists/*
 
 # setup entry point
 COPY entrypoint.sh /usr/local/bin
