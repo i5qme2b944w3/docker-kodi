@@ -46,10 +46,10 @@ ARG KODI_EXTRA_PACKAGES=
 #  - kodi-game-libretro-*         Libretro cores (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
 #  - kodi-pvr-*                   PVR add-ons (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
 #  - kodi-screensaver-*           additional screensavers (DEPRECATED: WILL BE REMOVED IN VERSION 4 OF THIS IMAGE)
-RUN packages="                                               \
-                                                             \
+RUN packages="                                                   \
+                                                                 \
 	ca-certificates                                          \
-	kodi													 \
+	kodi                                                     \
 	kodi-eventclients-kodi-send                              \
 	kodi-game-libretro                                       \
 	kodi-inputstream-adaptive                                \
@@ -61,7 +61,7 @@ RUN packages="                                               \
 	tzdata                                                   \
 	va-driver-all                                            \
 	${KODI_EXTRA_PACKAGES}"                               && \
-                                                             \
+                                                                 \
 	apt-get update                                        && \
 	apt-get install -y --no-install-recommends $packages  && \
 	apt-get -y --purge autoremove                         && \
