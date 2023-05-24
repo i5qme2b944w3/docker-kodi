@@ -25,11 +25,11 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 # install the team-xbmc ppa
 RUN apt-get update                                                        && \
-    apt-get install -y --no-install-recommends software-properties-common && \
-    add-apt-repository ppa:team-xbmc/ppa                                  && \
-    apt-get -y purge openssl software-properties-common                   && \
-    apt-get -y --purge autoremove                                         && \
-    rm -rf /var/lib/apt/lists/*
+	apt-get install -y --no-install-recommends software-properties-common && \
+	add-apt-repository ppa:team-xbmc/ppa                                  && \
+	apt-get -y purge openssl software-properties-common                   && \
+	apt-get -y --purge autoremove                                         && \
+	rm -rf /var/lib/apt/lists/*
 
 ARG KODI_EXTRA_PACKAGES=
 
@@ -62,10 +62,10 @@ RUN packages="                                               \
 	va-driver-all                                            \
 	${KODI_EXTRA_PACKAGES}"                               && \
                                                              \
-    apt-get update                                        && \
-    apt-get install -y --no-install-recommends $packages  && \
-    apt-get -y --purge autoremove                         && \
-    rm -rf /var/lib/apt/lists/*
+	apt-get update                                        && \
+	apt-get install -y --no-install-recommends $packages  && \
+	apt-get -y --purge autoremove                         && \
+	rm -rf /var/lib/apt/lists/*
 
 # setup entry point
 COPY entrypoint.sh /usr/local/bin
