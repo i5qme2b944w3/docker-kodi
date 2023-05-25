@@ -18,21 +18,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-FROM ubuntu:latest
+FROM ubuntu:focal
 
 # https://github.com/ehough/docker-nfs-server/pull/3#issuecomment-387880692
 ARG DEBIAN_FRONTEND=noninteractive
 
-# install the team-xbmc ppa, as well as python package wanted by netflix addon
+# install the team-xbmc ppa
 RUN apt-get update                                                        && \
-    apt-get install -y --no-install-recommends                               \
-    gnupg ca-certificates python3 python3-pip software-properties-common  && \
-    add-apt-repository ppa:team-xbmc/ppa                                  && \
-    pip3 install pycryptodomex                                            && \
-    apt-get -y --no-install-recommends purge                                 \
-    software-properties-common ca-certificates+ python3+                  && \
-    apt-get -y --purge autoremove                                         && \
-    rm -rf /var/lib/apt/lists/*
+                                                                             \
+        apt-get install -y --no-install-recommends                               \
+        gnupg software-properties-common                                      && \
+        add-apt-repository ppa:team-xbmc/ppa                                  && \
+        apt-get -y purge software-properties-common                           && \
+        apt-get -y --purge autoremove                                         && \
+        rm -rf /var/lib/apt/lists/*
 
 ARG KODI_EXTRA_PACKAGES=
 
@@ -46,28 +45,34 @@ ARG KODI_EXTRA_PACKAGES=
 #  - pulseaudio                   in case the user prefers PulseAudio instead of ALSA
 #  - tzdata                       necessary for timezone selection
 #  - va-driver-all                the full suite of drivers for the Video Acceleration API (VA API)
+#  - mesa-utils, mesa-utils-extra suggested by x11docker for hardware video acceleration
 #  - kodi-game-libretro-*         Libretro cores (REMOVED AFTER DEPRECATION)
 #  - kodi-pvr-*                   PVR add-ons (REMOVED AFTER DEPRECATION)
 #  - kodi-screensaver-*           additional screensavers (REMOVED AFTER DEPRECATION)
+#  - python3, python3-pycryptodome        used by netflix addon
 RUN packages="                                               \
                                                              \
-    ca-certificates                                          \
-    kodi                                                     \
-    kodi-eventclients-kodi-send                              \
-    kodi-game-libretro                                       \
-    kodi-inputstream-adaptive                                \
-    kodi-inputstream-rtmp                                    \
-    kodi-peripheral-joystick                                 \
-    kodi-peripheral-xarcade                                  \
-    locales                                                  \
-    pulseaudio                                               \
-    tzdata                                                   \
-    va-driver-all                                            \
-    ${KODI_EXTRA_PACKAGES}"                               && \
+        ca-certificates                                          \
+        kodi                                                     \
+        kodi-eventclients-kodi-send                              \
+        kodi-game-libretro                                       \
+        kodi-inputstream-adaptive                                \
+        kodi-inputstream-rtmp                                    \
+        kodi-peripheral-joystick                                 \
+        kodi-peripheral-xarcade                                  \
+        locales                                                  \
+        python3                                                  \
+        python3-pycryptodome                                     \
+        pulseaudio                                               \
+        tzdata                                                   \
+        va-driver-all                                            \
+        mesa-utils                                               \
+        mesa-utils-extra                                         \
+        ${KODI_EXTRA_PACKAGES}"                               && \
                                                              \
-    apt-get update                                        && \
-    apt-get install -y --no-install-recommends $packages  && \
-    apt-get -y --purge autoremove                         && \
+        apt-get update                                        && \
+        apt-get install -y --no-install-recommends $packages  && \
+        apt-get -y --purge autoremove                         && \
         rm -rf /var/lib/apt/lists/*
 
 # setup entry point
