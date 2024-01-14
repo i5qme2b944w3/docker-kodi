@@ -18,27 +18,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-FROM ubuntu:focal
+FROM ubuntu:latest
 
 # https://github.com/ehough/docker-nfs-server/pull/3#issuecomment-387880692
 ARG DEBIAN_FRONTEND=noninteractive
 
 # install the team-xbmc ppa
-RUN apt-get update                                                        && \
-                                                                             \
-        apt-get install -y --no-install-recommends                               \
-        gnupg software-properties-common                                      && \
-        add-apt-repository ppa:team-xbmc/ppa                                  && \
-        apt-get -y purge software-properties-common                           && \
-        apt-get -y --purge autoremove                                         && \
-        rm -rf /var/lib/apt/lists/*
+#RUN apt-get update                                                        && \
+#                                                                            \
+#       apt-get install -y --no-install-recommends                               \
+#       gnupg software-properties-common                                      && \
+#       add-apt-repository ppa:team-xbmc/ppa                                  && \
+#       apt-get -y purge software-properties-common                           && \
+#       apt-get -y --purge autoremove                                         && \
+#       rm -rf /var/lib/apt/lists/*
 
 ARG KODI_EXTRA_PACKAGES=
 
 # besides kodi, we will install a few extra packages:
 #  - ca-certificates              allows Kodi to properly establish HTTPS connections
 #  - kodi-eventclients-kodi-send  allows us to shut down Kodi gracefully upon container termination
-#  - kodi-game-libretro           allows Kodi to utilize Libretro cores as game add-ons
+#  - kodi-game-libretro           allows Kodi to utilize Libretro cores as game add-ons (not available in ubuntu jami repo)
 #  - kodi-inputstream-*           input stream add-ons
 #  - kodi-peripheral-*            enables the use of gamepads, joysticks, game controllers, etc.
 #  - locales                      additional spoken language support (via x11docker --lang option)
@@ -49,17 +49,19 @@ ARG KODI_EXTRA_PACKAGES=
 #  - kodi-game-libretro-*         Libretro cores (REMOVED AFTER DEPRECATION)
 #  - kodi-pvr-*                   PVR add-ons (REMOVED AFTER DEPRECATION)
 #  - kodi-screensaver-*           additional screensavers (REMOVED AFTER DEPRECATION)
+#  - kodi-repository-kodi         official kodi add-on repository
 #  - python3, python3-pycryptodome        used by netflix addon
 RUN packages="                                               \
                                                              \
         ca-certificates                                          \
         kodi                                                     \
         kodi-eventclients-kodi-send                              \
-        kodi-game-libretro                                       \
+#       kodi-game-libretro                                       \
         kodi-inputstream-adaptive                                \
         kodi-inputstream-rtmp                                    \
         kodi-peripheral-joystick                                 \
         kodi-peripheral-xarcade                                  \
+        kodi-repository-kodi                                     \
         locales                                                  \
         python3                                                  \
         python3-pycryptodome                                     \
